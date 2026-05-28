@@ -1,0 +1,411 @@
+# DemoJewellers Billing Page (HTML + CSS)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DemoJewellers Billing</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      background:#ffffff;
+      color:#111;
+      min-height:100vh;
+      padding:40px 15px;
+      background-image:
+      radial-gradient(circle at top left, rgba(199,82,42,0.08), transparent 250px),
+      radial-gradient(circle at bottom right, rgba(46,125,50,0.08), transparent 250px);
+    }
+
+    .container{
+      max-width:900px;
+      margin:auto;
+    }
+
+    .billing-card{
+      background:#fff;
+      border:2px solid #c7522a;
+      border-radius:28px;
+      padding:28px;
+      box-shadow:0 10px 40px rgba(0,0,0,0.08);
+    }
+
+    .title{
+      font-size:34px;
+      font-weight:700;
+      color:#2e7d32;
+      margin-bottom:25px;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .field{
+      margin-bottom:18px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-size:15px;
+      font-weight:600;
+      color:#2e7d32;
+    }
+
+    input,
+    select,
+    textarea{
+      width:100%;
+      border:2px solid #e5e5e5;
+      border-radius:14px;
+      padding:14px 16px;
+      font-size:15px;
+      outline:none;
+      transition:0.3s;
+      background:#fff;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus{
+      border-color:#c7522a;
+      box-shadow:0 0 0 4px rgba(199,82,42,0.12);
+    }
+
+    .product-row{
+      display:grid;
+      grid-template-columns:2fr 1fr 1fr auto;
+      gap:14px;
+      align-items:end;
+    }
+
+    .btn{
+      background:#c7522a;
+      color:#fff;
+      border:none;
+      padding:14px 24px;
+      border-radius:14px;
+      cursor:pointer;
+      font-size:15px;
+      font-weight:600;
+      transition:0.3s;
+    }
+
+    .btn:hover{
+      background:#a84321;
+      transform:translateY(-2px);
+    }
+
+    .summary-box{
+      border:2px dashed #c7522a;
+      border-radius:20px;
+      padding:22px;
+      margin-top:25px;
+      background:#fffaf7;
+    }
+
+    .summary-item{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:12px;
+      font-size:15px;
+    }
+
+    .grand-total{
+      border-top:2px solid #ddd;
+      margin-top:15px;
+      padding-top:15px;
+      font-size:26px;
+      font-weight:700;
+      color:#2e7d32;
+      display:flex;
+      justify-content:space-between;
+    }
+
+    .generate-btn{
+      width:100%;
+      margin-top:25px;
+      background:linear-gradient(90deg,#2e7d32,#c7522a);
+      color:#fff;
+      border:none;
+      padding:18px;
+      border-radius:18px;
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .generate-btn:hover{
+      transform:scale(1.01);
+      opacity:0.95;
+    }
+
+    .section-card{
+      margin-top:30px;
+      background:#fff;
+      border:2px solid #2e7d32;
+      border-radius:24px;
+      padding:25px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .section-title{
+      color:#c7522a;
+      font-size:28px;
+      font-weight:700;
+      margin-bottom:20px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:20px;
+    }
+
+    table th{
+      background:#2e7d32;
+      color:#fff;
+      padding:14px;
+      text-align:left;
+    }
+
+    table td{
+      padding:14px;
+      border-bottom:1px solid #eee;
+    }
+
+    .live-rates{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-top:15px;
+    }
+
+    .rate-box{
+      background:#fffaf7;
+      border:2px solid #c7522a;
+      border-radius:18px;
+      padding:20px;
+    }
+
+    .rate-box h4{
+      color:#2e7d32;
+      margin-bottom:10px;
+      font-size:20px;
+    }
+
+    .rate-price{
+      font-size:28px;
+      font-weight:700;
+      color:#c7522a;
+    }
+
+    @media(max-width:768px){
+      .grid-2,
+      .product-row,
+      .live-rates{
+        grid-template-columns:1fr;
+      }
+
+      .title,
+      .section-title{
+        font-size:26px;
+      }
+
+      .billing-card,
+      .section-card{
+        padding:20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="billing-card">
+      <h1 class="title">💎 Create New Invoice</h1>
+
+      <div class="grid-2">
+        <div class="field">
+          <label>Customer Name</label>
+          <input type="text" placeholder="Enter customer name">
+        </div>
+
+        <div class="field">
+          <label>Mobile Number</label>
+          <input type="text" placeholder="Enter mobile number">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Address</label>
+        <textarea rows="3" placeholder="Customer Address"></textarea>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" placeholder="Customer Email">
+        </div>
+
+        <div class="field">
+          <label>GST Type</label>
+          <select>
+            <option>Non-GST</option>
+            <option>GST 3%</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label>Making Charge (%)</label>
+          <input type="number" value="0">
+        </div>
+
+        <div class="field">
+          <label>Discount (₹)</label>
+          <input type="number" value="0">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Item Type</label>
+        <select>
+          <option>Select Item Type</option>
+          <option>Gold Ring</option>
+          <option>Necklace</option>
+          <option>Bangles</option>
+        </select>
+      </div>
+
+      <div class="product-row">
+        <div class="field">
+          <label>Product</label>
+          <input type="text" placeholder="Search Product">
+        </div>
+
+        <div class="field">
+          <label>Qty</label>
+          <input type="number" placeholder="0">
+        </div>
+
+        <div class="field">
+          <label>Rate</label>
+          <input type="number" placeholder="0">
+        </div>
+
+        <button class="btn">+ Add</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Rate</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Gold Ring</td>
+            <td>1</td>
+            <td>₹ 25,000</td>
+            <td>₹ 25,000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="summary-box">
+        <div class="summary-item">
+          <span>Subtotal</span>
+          <span>₹ 25,000</span>
+        </div>
+
+        <div class="summary-item">
+          <span>Making Charge</span>
+          <span>₹ 1,000</span>
+        </div>
+
+        <div class="summary-item">
+          <span>Discount</span>
+          <span>₹ 500</span>
+        </div>
+
+        <div class="grand-total">
+          <span>Grand Total</span>
+          <span>₹ 25,500</span>
+        </div>
+      </div>
+
+      <button class="generate-btn">✨ Generate Invoice ✨</button>
+    </div>
+
+
+    <div class="section-card">
+      <h2 class="section-title">💰 EMI Calculator</h2>
+
+      <div class="field">
+        <label>Loan Amount</label>
+        <input type="number" placeholder="Enter amount">
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label>Interest Rate (%)</label>
+          <input type="number" value="12">
+        </div>
+
+        <div class="field">
+          <label>Tenure (Months)</label>
+          <input type="number" value="6">
+        </div>
+      </div>
+
+      <button class="generate-btn">Calculate EMI</button>
+    </div>
+
+
+    <div class="section-card">
+      <h2 class="section-title">📈 Live Metal Rates</h2>
+
+      <div class="live-rates">
+
+        <div class="rate-box">
+          <h4>Gold Rate</h4>
+          <div class="rate-price">₹ 9,850 / gm</div>
+        </div>
+
+        <div class="rate-box">
+          <h4>Silver Rate</h4>
+          <div class="rate-price">₹ 115 / gm</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
+```
