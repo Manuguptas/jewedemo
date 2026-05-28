@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DemoJewellers - Premium Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Poppins:wght@300;400;500;600&display=swap');
+        
+        * { font-family: 'Poppins', sans-serif; }
+        h1, h2, h3, .gold-font { font-family: 'Playfair Display', serif; }
+        
+        /* Premium Royal Dark Background */
+        body {
+            background: linear-gradient(135deg, #53e68e 0%, #1a1205 30%, #af8027 50%, #1a1205 70%, #53e68e 100%);
+            min-height: 100vh;
+            color: #f3f4f6;
+        }
+
+        /* Gold Gradient Animations */
+        .golden-gradient {
+            background: linear-gradient(135deg, #D4AF37, #FFD700, #FF69B4, #00CED1, #FFD700);
+            background-size: 200% 200%;
+            animation: goldenShine 3s ease infinite;
+        }
+        @keyframes goldenShine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .nav-gold {
+            background: linear-gradient(135deg, #53e68e, #3d2a00, #6b4c00, #3d2a00, #53e68e);
+            border-bottom: 2px solid #FFD700;
+        }
+        .card-custom {
+            background: rgba(124, 224, 42, 0.7);
+            border: 1px solid rgba(59, 145, 19, 0.2);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-gold px-6 py-4 flex justify-between items-center shadow-2xl">
+        <div class="flex items-center space-x-3">
+            <i class="fas fa-gem text-yellow-400 text-3xl animate-bounce"></i>
+            <span class="gold-font text-2xl font-black text-yellow-400 tracking-wider">DEMOJEWELLERS</span>
+        </div>
+        <div class="flex items-center space-x-6">
+            <span class="text-gray-300 text-sm hidden md:inline"><i class="fas fa-user-shield text-yellow-500 mr-2"></i>Admin Mode</span>
+            <button onclick="clearSystemData()" class="bg-red-900 hover:bg-red-800 text-white px-3 py-1 text-xs rounded border border-red-500 transition">
+                <i class="fas fa-trash-alt mr-1"></i> Clear Data
+            </button>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <div class="lg:col-span-2 space-y-6">
+            
+            <div class="card-custom p-6 rounded-xl shadow-lg">
+                <h2 class="text-xl font-bold text-yellow-400 mb-4 border-b border-yellow-500/30 pb-2">
+                    <i class="fas fa-user-tag mr-2"></i>Customer Information
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-yellow-500 font-semibold mb-1">CUSTOMER NAME</label>
+                        <input type="text" id="custName" placeholder="Enter name" class="w-full bg-black/50 border border-yellow-500/40 rounded px-3 py-2 text-white focus:outline-none focus:border-yellow-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-yellow-500 font-semibold mb-1">MOBILE NUMBER</label>
+                        <input type="tel" id="custMobile" placeholder="Enter 10-digit number" class="w-full bg-black/50 border border-yellow-500/40 rounded px-3 py-2 text-white focus:outline-none focus:border-yellow-400">
+                    </div>
+                      <div>
+                        <label class="block text-xs text-yellow-500 font-semibold mb-1">GST NUMBER</label>
+                        <input type="tel" id="custMobile" placeholder="GST Number" class="w-full bg-black/50 border border-yellow-500/40 rounded px-3 py-2 text-white focus:outline-none focus:border-yellow-400">
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label class="block text-xs text-yellow-500 font-semibold mb-1">ADDRESS</label>
+                    <textarea id="custAddress" rows="2" placeholder="Customer address..." class="w-full bg-black/50 border border-yellow-500/40 rounded px-3 py-2 text-white focus:outline-none focus:border-yellow-400"></textarea>
+                </div>
+            </div>
+
+            <div class="card-custom p-6 rounded-xl shadow-lg">
+                <h2 class="text-xl font-bold text-yellow-400 mb-4 border-b border-yellow-500/30 pb-2">
+                    <i class="fas fa-cart-plus mr-2"></i>Add Jewellery Items
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                    <div>
+                        <label class="block text-xs text-yellow-500 font-semibold mb-1">SELECT JEWELLERY</label>
+                        <select id="prodSelect" onchange="updatePriceHint()" class="w-full bg-black/90 border border-yellow-500/40 rounded px-3 py-2 text-white focus:outline-none focus:border-yellow-400">
+                            </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-yellow-500 font-semibold mb-1">QUANTITY</label>
+                        <input type="number" id="prodQty" value="1" min="1" class="w-full bg-black/50 border border-yellow-500/40 rounded px-3 py-2 text-white focus:outline-none focus:border-yellow-400">
+                    </div>
+                    <div>
+                        <button onclick="addItemToInvoice()" class="w-full golden-gradient hover:opacity-90 text-black font-bold py-2 rounded shadow-md transition transform active:scale-95">
+                            <i class="fas fa-plus-circle mr-1"></i> Add to List
+                        </button>
+                    </div>
+                </div>
+                <p id="priceHint" class="text-xs text-pink-400 mt-2 italic"></p>
+            </div>
+
+            <div class="card-custom p-6 rounded-xl shadow-lg overflow-x-auto">
+                <h2 class="text-lg font-bold text-yellow-400 mb-3"><i class="fas fa-list-ol mr-2"></i>Current Invoice Items</h2>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-yellow-500/20 text-yellow-500 text-xs tracking-wider">
+                            <th class="p-2">PRODUCT</th>
+                            <th class="p-2">RATE (₹)</th>
+                            <th class="p-2 text-center">QTY</th>
+                            <th class="p-2 text-right">TOTAL (₹)</th>
+                            <th class="p-2 text-center">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoiceTableBody" class="text-sm divide-y divide-yellow-500/10">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="space-y-6">
+            <div class="card-custom p-6 rounded-xl shadow-lg border-2 border-yellow-500/40 sticky top-6">
+                <h2 class="text-xl font-bold text-yellow-400 mb-4 border-b border-yellow-500/30 pb-2 text-center">
+                    <i class="fas fa-file-invoice-dollar mr-2"></i>Bill Summary
+                </h2>
+                
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">GST Type:</span>
+                        <select id="gstType" onchange="calculateBillTotals()" class="bg-black text-yellow-400 border border-yellow-500/30 rounded px-2 py-1 text-xs focus:outline-none">
+                            <option value="non_gst">Non-GST (0%)</option>
+                            <option value="gst">With GST (3%)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Making Charges (%):</span>
+                        <input type="number" id="makingCharge" value="0" min="0" oninput="calculateBillTotals()" class="w-16 bg-black text-right border border-yellow-500/30 rounded px-1 py-0.5 text-white text-xs">
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Hallmark Charge (₹):</span>
+                        <input type="number" id="hallmarkCharge" value="0" min="0" oninput="calculateBillTotals()" class="w-20 bg-black text-right border border-yellow-500/30 rounded px-1 py-0.5 text-white text-xs">
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Discount (₹):</span>
+                        <input type="number" id="discountCharge" value="0" min="0" oninput="calculateBillTotals()" class="w-20 bg-black text-right border border-yellow-500/30 rounded px-1 py-0.5 text-white text-xs">
+                    </div>
+
+                    <hr class="border-yellow-500/20 my-3">
+
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Subtotal:</span>
+                        <span>₹ <span id="lblSubtotal">0.00</span></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Making Charge Amt:</span>
+                        <span>₹ <span id="lblMakingAmt">0.00</span></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">GST Amount:</span>
+                        <span>₹ <span id="lblGstAmt">0.00</span></span>
+                    </div>
+
+                    <div class="p-3 bg-yellow-500/10 rounded-lg border border-yellow-500/30 mt-4">
+                        <div class="flex justify-between items-center text-lg font-bold text-yellow-400">
+                            <span>NET PAYABLE:</span>
+                            <span>₹ <span id="lblNetTotal">0.00</span></span>
+                        </div>
+                    </div>
+
+                    <button onclick="generateFinalInvoice()" class="w-full mt-4 bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded-lg shadow-lg uppercase tracking-wider text-sm transition transform active:scale-95">
+                        <i class="fas fa-print mr-2"></i> Generate & Print Invoice
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center text-xs text-gray-600 mt-12 pb-6">
+        <p><i class="fas fa-clock mr-1"></i> Monday - Saturday: 10AM - 8PM</p>
+        <p class="mt-1 text-yellow-600/60">© Moti Jewellers Premium System Frontend</p>
+    </footer>
+
+    <script>
+        // Sample Products Array derived from database.sql
+        const sampleProducts = [
+            { id: 1, name: "Gold Necklace", price: 45000, category: "Gold" },
+            { id: 2, name: "Diamond Ring", price: 85000, category: "Diamond" },
+            { id: 3, name: "Silver Earrings", price: 3500, category: "Silver" },
+            { id: 4, name: "Gold Bangles", price: 28000, category: "Gold" },
+            { id: 5, name: "Platinum Chain", price: 125000, category: "Platinum" },
+            { id: 6, name: "Ruby Pendant", price: 32000, category: "Gemstone" }
+        ];
+
+        // App state variables
+        let invoiceItems = JSON.parse(localStorage.getItem('moti_current_items')) || [];
+
+        // Application Initialize Function
+        window.onload = function() {
+            populateProductsDropdown();
+            renderInvoiceTable();
+        };
+
+        // Populate system products inside selection menu
+        function populateProductsDropdown() {
+            const dropdown = document.getElementById('prodSelect');
+            dropdown.innerHTML = sampleProducts.map(p => 
+                `<option value="${p.id}">${p.name} (${p.category})</option>`
+            ).join('');
+            updatePriceHint();
+        }
+
+        // Show live value hint of selected item
+        function updatePriceHint() {
+            const prodId = document.getElementById('prodSelect').value;
+            const product = sampleProducts.find(p => p.id == prodId);
+            if(product) {
+                document.getElementById('priceHint').innerText = `Base Rate: ₹ ${product.price.toLocaleString('en-IN')}`;
+            }
+        }
+
+        // Add user selected product to invoice list
+        function addItemToInvoice() {
+            const prodId = document.getElementById('prodSelect').value;
+            const qty = parseInt(document.getElementById('prodQty').value) || 1;
+            const product = sampleProducts.find(p => p.id == prodId);
+
+            if(!product) return;
+
+            // Check if item already exists inside list
+            const existingItem = invoiceItems.find(item => item.product_id === product.id);
+            if(existingItem) {
+                existingItem.quantity += qty;
+                existingItem.total = existingItem.quantity * existingItem.price;
+            } else {
+                invoiceItems.push({
+                    product_id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: qty,
+                    total: product.price * qty
+                });
+            }
+
+            saveAndSyncData();
+        }
+
+        // Delete item from list
+        function deleteItem(prodId) {
+            invoiceItems = invoiceItems.filter(item => item.product_id !== prodId);
+            saveAndSyncData();
+        }
+
+        // Synchronize and save array to user local UI storage
+        function saveAndSyncData() {
+            localStorage.setItem('moti_current_items', JSON.stringify(invoiceItems));
+            renderInvoiceTable();
+        }
+
+        // Render data rows in UI table
+        function renderInvoiceTable() {
+            const tbody = document.getElementById('invoiceTableBody');
+            if(invoiceItems.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500 italic">No items added to bill yet.</td></tr>`;
+                calculateBillTotals();
+                return;
+            }
+
+            tbody.innerHTML = invoiceItems.map(item => `
+                <tr class="hover:bg-yellow-500/5 transition">
+                    <td class="p-2 font-medium text-white">${item.name}</td>
+                    <td class="p-2">₹ ${item.price.toLocaleString('en-IN')}</td>
+                    <td class="p-2 text-center font-bold">${item.quantity}</td>
+                    <td class="p-2 text-right text-yellow-400 font-semibold">₹ ${item.total.toLocaleString('en-IN')}</td>
+                    <td class="p-2 text-center">
+                        <button onclick="deleteItem(${item.product_id})" class="text-red-400 hover:text-red-500 p-1"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+
+            calculateBillTotals();
+        }
+
+        // Advanced math billing calculations matching exact backend logic
+        function calculateBillTotals() {
+            // Subtotal logic from item lists
+            let subtotal = invoiceItems.reduce((sum, item) => sum + item.total, 0);
+            
+            // Collect external parameter values
+            let makingChargePercent = parseFloat(document.getElementById('makingCharge').value) || 0;
+            let hallmark = parseFloat(document.getElementById('hallmarkCharge').value) || 0;
+            let discount = parseFloat(document.getElementById('discountCharge').value) || 0;
+            let gstType = document.getElementById('gstType').value;
+
+            // Calculations
+            let makingChargeAmount = (subtotal * makingChargePercent) / 100;
+            
+            let gstAmount = 0;
+            if(gstType === 'gst') {
+                // GST applies to subtotal + making charges
+                gstAmount = ((subtotal + makingChargeAmount) * 3) / 100;
+            }
+
+            let netTotal = subtotal + makingChargeAmount + hallmark - discount + gstAmount;
+
+            // Apply to view interfaces
+            document.getElementById('lblSubtotal').innerText = subtotal.toFixed(2);
+            document.getElementById('lblMakingAmt').innerText = makingChargeAmount.toFixed(2);
+            document.getElementById('lblGstAmt').innerText = gstAmount.toFixed(2);
+            document.getElementById('lblNetTotal').innerText = netTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        // Final Invoice trigger logic
+        function generateFinalInvoice() {
+            const name = document.getElementById('custName').value.trim();
+            const mobile = document.getElementById('custMobile').value.trim();
+
+            if(!name || !mobile) {
+                alert("⚠️ Please enter Customer Name and Mobile Number before generating bill!");
+                return;
+            }
+
+            if(invoiceItems.length === 0) {
+                alert("⚠️ Please add at least one jewellery item to invoice!");
+                return;
+            }
+
+            // Mock generation process alert
+            const randomInvNo = 'INV-' + new Date().toISOString().slice(0,10).replace(/-/g,"") + '-' + Math.floor(1000 + Math.random() * 9000);
+            alert(`🎉 Success!\nInvoice No: ${randomInvNo}\nTotal Amount: ₹ ${document.getElementById('lblNetTotal').innerText}\n\nPrinting setup is ready!`);
+            window.print();
+        }
+
+        // Clear State Functionality
+        function clearSystemData() {
+            if(confirm("Are you sure you want to reset current billing entries?")) {
+                localStorage.removeItem('moti_current_items');
+                invoiceItems = [];
+                document.getElementById('custName').value = '';
+                document.getElementById('custMobile').value = '';
+                document.getElementById('custAddress').value = '';
+                saveAndSyncData();
+            }
+        }
+    </script>
+</body>
+</html>
